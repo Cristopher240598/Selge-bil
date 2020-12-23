@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "486401868121",
+    "project_id": "busmatch",
+    "storage_bucket": "busmatch.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:486401868121:android:f8404cf0be6d71c5630c48",
+        "android_client_info": {
+          "package_name": "com.example.selge_bil"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "486401868121-o4du754rn9f3q987kc3g97k3guma25e6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.selge_bil",
+            "certificate_hash": "710104e3cf7c428d0513f2b5f64d2567b0e9fcac"
+          }
+        },
+        {
+          "client_id": "486401868121-3lhbq94mpc9dgjc62jo4um2pjqlv2qt4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfSagHpR0UUZvfIGwIMmFxxy5BUB1Rihg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "486401868121-3lhbq94mpc9dgjc62jo4um2pjqlv2qt4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
