@@ -9,16 +9,23 @@
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".activities.vendedor.RegisterVendedorActivity"></activity>
+        <activity android:name=".activities.comprador.RegisterCompradorActivity" />
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.vendedor.VendedorActivity" />
+        <activity android:name=".activities.comprador.CompradorActivity" />
+        <activity android:name=".activities.SelectOptionAuthActivity" />
+        <activity android:name=".activities.MainOption">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
