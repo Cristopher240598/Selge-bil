@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.selge_bil.MainActivity;
 import com.example.selge_bil.R;
 import com.example.selge_bil.activities.comprador.CompradorActivity;
 import com.example.selge_bil.activities.vendedor.VendedorActivity;
@@ -53,12 +54,12 @@ public class MainOption extends AppCompatActivity {
         if(FirebaseAuth.getInstance().getCurrentUser() != null){
             String user = mPref.getString("user","");
             if(user.equals("comprador")){
-                Intent intent = new Intent(MainOption.this, CompradorActivity.class);
+                Intent intent = new Intent(MainOption.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK); //cuando se crea el usuario ya no puedes regresar a la pantalla de formulario de registro
                 startActivity(intent);
             }
             else{
-                Intent intent = new Intent(MainOption.this, VendedorActivity.class);
+                Intent intent = new Intent(MainOption.this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK); //cuando se crea el usuario ya no puedes regresar a la pantalla de formulario de registro
                 startActivity(intent);
             }
