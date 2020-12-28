@@ -4,40 +4,53 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class AuthProvider {
+public class AuthProvider
+{
     FirebaseAuth mAuth;
 
-    public AuthProvider() {
+    public AuthProvider()
+    {
         mAuth = FirebaseAuth.getInstance();
     }
 
-    public Task<AuthResult> register(String email, String password) {
+    public Task<AuthResult> register(String email, String password)
+    {
         return mAuth.createUserWithEmailAndPassword(email, password);
     }
-    public Task<AuthResult> login(String email, String password){
+
+    public Task<AuthResult> login(String email, String password)
+    {
         return mAuth.signInWithEmailAndPassword(email, password);
     }
 
-    public void logout(){
+    public void logout()
+    {
         mAuth.signOut();
     }
 
-    public String getId(){
+    public String getId()
+    {
         return mAuth.getCurrentUser().getUid();
     }
-    public String getEmail(){
+
+    public String getEmail()
+    {
         return mAuth.getCurrentUser().getEmail();
     }
-    public String getName(){
+
+    public String getName()
+    {
         return mAuth.getCurrentUser().getDisplayName();
     }
 
-    public boolean existSession(){
-        boolean exist= false;
-        if(mAuth.getCurrentUser() != null){
-            exist=true;
+    public boolean existSession()
+    {
+        boolean exist = false;
+        if (mAuth.getCurrentUser() != null)
+        {
+            exist = true;
         }
-        return  exist;
+        return exist;
 
     }
 }

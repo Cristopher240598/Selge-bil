@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_mycars"
+            android:icon="@drawable/carros"
+            android:title="@string/misCarros" />
+        <item
+            android:id="@+id/nav_sellcar"
+            android:icon="@drawable/vendercarro"
+            android:title="@string/venderCarro" />
+        <item
+            android:id="@+id/nav_updateDeleteCar"
+            android:icon="@drawable/icono_editar"
+            android:title="@string/eliminarActualizarCarro" />
+        <item
+            android:id="@+id/nav_sold"
+            android:icon="@drawable/vendidos"
+            android:title="@string/vendidos" />
+        <item
+            android:id="@+id/nav_manual"
+            android:icon="@drawable/manual"
+            android:title="@string/manual" />
+    </group>
+</menu>

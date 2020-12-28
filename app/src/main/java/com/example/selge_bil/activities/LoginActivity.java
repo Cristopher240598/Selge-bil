@@ -11,10 +11,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.selge_bil.MainActivity;
+import com.example.selge_bil.sellerOptions.MainActivity_Vendedor;
 import com.example.selge_bil.R;
-import com.example.selge_bil.activities.comprador.CompradorActivity;
-import com.example.selge_bil.activities.vendedor.VendedorActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -74,12 +72,12 @@ public class LoginActivity extends AppCompatActivity {
                             //Toast.makeText(LoginActivity.this, "Inicio de sesión exitoso!", Toast.LENGTH_SHORT).show();
                             String user = mPref.getString("user","");
                             if(user.equals("comprador")){
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, MainActivity_Vendedor.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK); //cuando se crea el usuario ya no puedes regresar a la pantalla de formulario de registro
                                 startActivity(intent);
                             }
                             else{
-                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, MainActivity_Vendedor.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK); //cuando se crea el usuario ya no puedes regresar a la pantalla de formulario de registro
                                 startActivity(intent);
                             }

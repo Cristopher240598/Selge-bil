@@ -11,13 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.selge_bil.MainActivity;
+import com.example.selge_bil.sellerOptions.MainActivity_Vendedor;
 import com.example.selge_bil.R;
-import com.example.selge_bil.activities.comprador.RegisterCompradorActivity;
-import com.example.selge_bil.models.Comprador;
 import com.example.selge_bil.models.Vendedor;
 import com.example.selge_bil.providers.AuthProvider;
-import com.example.selge_bil.providers.CompradorProvider;
 import com.example.selge_bil.providers.VendedorProvider;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,7 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import dmax.dialog.SpotsDialog;
 
-public class RegisterVendedorActivity extends AppCompatActivity {
+public class RegisterVendedorActivity extends AppCompatActivity
+{
     SharedPreferences mPref;
     AuthProvider mAuthProvider;
     VendedorProvider mVendedorProvider;
@@ -41,17 +39,16 @@ public class RegisterVendedorActivity extends AppCompatActivity {
 
 
     AlertDialog mDialog;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register_comprador);
         mAuthProvider = new AuthProvider();
         mVendedorProvider = new VendedorProvider();
 
         mDialog = new SpotsDialog.Builder().setContext(RegisterVendedorActivity.this).setMessage("Espere un momento").build();
-
-
-
 
 
         mPref = getApplicationContext().getSharedPreferences("typeUser", MODE_PRIVATE);
@@ -62,56 +59,75 @@ public class RegisterVendedorActivity extends AppCompatActivity {
         mTextInputEmail = findViewById(R.id.textInputEmail);
 
 
-        mButtonRegister.setOnClickListener(new View.OnClickListener() {
+        mButtonRegister.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 clickRegister();
             }
         });
     }
-    void clickRegister() {
+
+    void clickRegister()
+    {
         final String name = mTextInputName.getText().toString();
         final String email = mTextInputEmail.getText().toString();
         final String password = mTextInputPassword.getText().toString();
 
-        if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-            if (password.length() >= 6) {
+        if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty())
+        {
+            if (password.length() >= 6)
+            {
                 mDialog.show();
-                register(name,email,password);
-            } else {
+                register(name, email, password);
+            } else
+            {
                 Toast.makeText(this, "La contraseña debe contener al menos 6 caracteres", Toast.LENGTH_SHORT).show();
             }
-        } else {
+        } else
+        {
             Toast.makeText(this, "Ingrese todos los campos", Toast.LENGTH_SHORT).show();
         }
     }
-    void register(final String name, final String email, String password){
-        mAuthProvider.register(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+    void register(final String name, final String email, String password)
+    {
+        mAuthProvider.register(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>()
+        {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
+            public void onComplete(@NonNull Task<AuthResult> task)
+            {
                 mDialog.hide();
-                if (task.isSuccessful()) {
+                if (task.isSuccessful())
+                {
                     String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    Vendedor client=new Vendedor(id,name,email);
+                    Vendedor client = new Vendedor(id, name, email);
                     create(client);
-                } else {
+                } else
+                {
                     Toast.makeText(RegisterVendedorActivity.this, "No se pudo registrar el usuario", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-    void create(Vendedor client){
-        mVendedorProvider.create(client).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+    void create(Vendedor client)
+    {
+        mVendedorProvider.create(client).addOnCompleteListener(new OnCompleteListener<Void>()
+        {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()) {
+            public void onComplete(@NonNull Task<Void> task)
+            {
+                if (task.isSuccessful())
+                {
                     //Toast.makeText(RegisterActivity.this, "El registro se realizo exitosamente", Toast.LENGTH_SHORT).show();                }
-                    Intent intent = new Intent(RegisterVendedorActivity.this, MainActivity.class);
+                    Intent intent = new Intent(RegisterVendedorActivity.this, MainActivity_Vendedor.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK); //cuando se crea el usuario ya no puedes regresar a la pantalla de formulario de registro
                     startActivity(intent);
-                }
-                else{
-                    Toast.makeText(RegisterVendedorActivity.this, "No se pudo crear el Comprador", Toast.LENGTH_SHORT).show();
+                } else
+                {
+                    Toast.makeText(RegisterVendedorActivity.this, "No se pudo crear el Vendedor", Toast.LENGTH_SHORT).show();
                 }
             }
         });

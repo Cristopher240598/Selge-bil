@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_mycars">
+
+    <fragment
+        android:id="@+id/nav_mycars"
+        android:name="com.example.selge_bil.sellerOptions.myCars.MyCarsFragment"
+        android:label="@string/menu_misCarros"
+        tools:layout="@layout/fragment_mycars" />
+
+    <fragment
+        android:id="@+id/nav_sellcar"
+        android:name="com.example.selge_bil.sellerOptions.sellCar.SellCarFragment"
+        android:label="@string/menu_venderCarro"
+        tools:layout="@layout/fragment_sellcar" />
+
+    <fragment
+        android:id="@+id/nav_sold"
+        android:name="com.example.selge_bil.sellerOptions.sold.SoldFragment"
+        android:label="@string/menu_vendidos"
+        tools:layout="@layout/fragment_sold" />
+
+    <fragment
+        android:id="@+id/nav_manual"
+        android:name="com.example.selge_bil.sellerOptions.userManual.UserManualFragment"
+        android:label="@string/manual"
+        tools:layout="@layout/fragment_user_manual" />
+
+    <fragment
+        android:id="@+id/nav_updateDeleteCar"
+        android:name="com.example.selge_bil.sellerOptions.updateDelete_Car.UpdateDeleteCarFragment"
+        android:label="@string/eliminarActualizarCarro"
+        tools:layout="@layout/fragment_update_delete_car" />
+</navigation>
