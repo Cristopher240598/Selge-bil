@@ -197,7 +197,8 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {//Habilita permisos para ubicacion
-                                ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+                                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+                             //   ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
 
                             }
                         })
@@ -205,7 +206,8 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
                         .show();
             }
             else{
-                ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+               // ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
             }
         }
 
@@ -496,6 +498,7 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {//si el usuario concedio los permisos
                 if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     if(gpsActived()){
+
                         fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>()
                         {
                             @Override
@@ -518,7 +521,6 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
                                 }
                             }
                         });
-
                     }
                     else{
                         showAlertDialogNOGPS();
@@ -532,6 +534,4 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
             }
         }
     }
-
-
 }
