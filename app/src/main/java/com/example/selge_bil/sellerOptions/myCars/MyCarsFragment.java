@@ -109,7 +109,7 @@ public class MyCarsFragment extends Fragment
     }
 
 
-    public class CarroViewHolder extends RecyclerView.ViewHolder
+    public static class CarroViewHolder extends RecyclerView.ViewHolder
     {
         View view;
         public MapView mapView;

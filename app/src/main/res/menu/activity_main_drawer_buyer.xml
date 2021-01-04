@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_convertible"
+            android:icon="@drawable/carros"
+            android:title="Convertible" />
+        <item
+            android:id="@+id/nav_coupe"
+            android:icon="@drawable/carros"
+            android:title="Coupé" />
+        <item
+            android:id="@+id/nav_electrico"
+            android:icon="@drawable/carros"
+            android:title="Eléctrico" />
+        <item
+            android:id="@+id/nav_hibrido"
+            android:icon="@drawable/carros"
+            android:title="Híbrido" />
+        <item
+            android:id="@+id/nav_pickUp"
+            android:icon="@drawable/carros"
+            android:title="Pick Up" />
+        <item
+            android:id="@+id/nav_sedan"
+            android:icon="@drawable/carros"
+            android:title="Sedán" />
+        <item
+            android:id="@+id/nav_suv"
+            android:icon="@drawable/carros"
+            android:title="SUV" />
+        <item
+            android:id="@+id/nav_van"
+            android:icon="@drawable/carros"
+            android:title="Van" />
+        <item
+            android:id="@+id/nav_hatchback"
+            android:icon="@drawable/carros"
+            android:title="Hatchback" />
+        <item
+            android:id="@+id/nav_utilitario"
+            android:icon="@drawable/carros"
+            android:title="Utilitario" />
+        <item
+            android:id="@+id/nav_manual_buyer"
+            android:icon="@drawable/manual"
+            android:title="@string/manual" />
+    </group>
+</menu>

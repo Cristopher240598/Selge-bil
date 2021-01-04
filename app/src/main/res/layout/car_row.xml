@@ -42,6 +42,7 @@
                     android:layout_width="215dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:id="@+id/lyDatosMiCarro"
                     android:orientation="vertical">
 
                     <TextView
