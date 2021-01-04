@@ -2,13 +2,19 @@ package com.example.selge_bil.sellerOptions.sellCar;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Looper;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +28,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
@@ -52,6 +60,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
+import static androidx.core.content.ContextCompat.getSystemService;
+
 
 public class SellCarFragment extends Fragment implements OnMapReadyCallback, View.OnClickListener,
         AdapterView.OnItemSelectedListener
@@ -64,12 +74,15 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
     private EditText eTModelo, eTPrecio, eTTraccion, eTKilometraje;
     private Button btnLimpiar, btnAgregar;
     private GoogleMap map;
+    private final static int LOCATION_REQUEST_CODE = 1;
+    private final static int SETTINGS_REQUEST_CODE = 2;
     double latitud, longitud;
     private FusedLocationProviderClient fusedLocationClient;
     //private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     private AuthProvider authProvider;
+    private boolean flag = false;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -155,41 +168,130 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
         spnCombustibles.setOnItemSelectedListener(this);
         spnNoPasajeros.setOnItemSelectedListener(this);
     }
+    private boolean gpsActived(){ //si tiene el gps activo
 
+        boolean isActive= false;
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){ //comprobar si tiene el gps activado
+            isActive= true;
+
+        }
+        return isActive;
+    }
+    private void showAlertDialogNOGPS(){
+        flag=true;
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Por favor activa tu ubicación para continuar")
+                .setPositiveButton("Configuraciones", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),SETTINGS_REQUEST_CODE);
+                    }
+                }).create().show();
+    }
+    private void checkLocationPermissions(){
+        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.ACCESS_FINE_LOCATION)){
+                flag=true;
+                new AlertDialog.Builder(getContext())
+                        .setTitle("Proporciona los permisos para continuar")
+                        .setMessage("Esta aplicación requiere de los permisos de ubicación para poder utilizarse")
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {//Habilita permisos para ubicacion
+                                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+                             //   ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+            else{
+                flag=true;
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+               // ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+            }
+        }
+
+    }
+    public void fusedLocation(){
+
+    }
     //Mostrar mapa con ubicación actual
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
         map = googleMap;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                if(gpsActived()){
+                    fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>()
+                    {
+                        @Override
+                        public void onSuccess(Location location)
+                        {
+                            if (location != null)
+                            {
+                                //Toast.makeText(getContext(), "Latitud: " + location.getLatitude() + " Longitud: " + location.getLongitude(), Toast.LENGTH_LONG).show();
+                                latitud = location.getLatitude();
+                                longitud = location.getLongitude();
+                                LatLng ubicacionActual = new LatLng(location.getLatitude(), location.getLongitude());
+                                map.addMarker(new MarkerOptions()
+                                        .position(ubicacionActual)
+                                );
+                                map.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionActual, 15f));
+                            } else
+                            {
+                                //createLocationRequest();
+                                Toast.makeText(getContext(), "Reinicia el servicio de ubicación", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
 
-
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
-            Toast.makeText(getContext(), "Revisar permisos", Toast.LENGTH_LONG).show();
-        }
-        fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>()
-        {
-            @Override
-            public void onSuccess(Location location)
-            {
-                if (location != null)
-                {
-                    //Toast.makeText(getContext(), "Latitud: " + location.getLatitude() + " Longitud: " + location.getLongitude(), Toast.LENGTH_LONG).show();
-                    latitud = location.getLatitude();
-                    longitud = location.getLongitude();
-                    LatLng ubicacionActual = new LatLng(location.getLatitude(), location.getLongitude());
-                    map.addMarker(new MarkerOptions()
-                            .position(ubicacionActual)
-                    );
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionActual, 15f));
-                } else
-                {
-                    //createLocationRequest();
-                    Toast.makeText(getContext(), "Reinicia el servicio de ubicación", Toast.LENGTH_LONG).show();
                 }
+                else{
+                    showAlertDialogNOGPS();
+                }
+            }else{
+                checkLocationPermissions();
             }
-        });
+        }
+        else{
+            if(gpsActived()){
+                fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>()
+                {
+                    @Override
+                    public void onSuccess(Location location)
+                    {
+                        if (true)
+                        {
+                            //Toast.makeText(getContext(), "Latitud: " + location.getLatitude() + " Longitud: " + location.getLongitude(), Toast.LENGTH_LONG).show();
+                            latitud = location.getLatitude();
+                            longitud = location.getLongitude();
+                            LatLng ubicacionActual = new LatLng(location.getLatitude(), location.getLongitude());
+                            map.addMarker(new MarkerOptions()
+                                    .position(ubicacionActual)
+                            );
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionActual, 15f));
+                        } else
+                        {
+                            //createLocationRequest();
+                            Toast.makeText(getContext(), "Reinicia el servicio de ubicación", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+            }
+            else{
+                showAlertDialogNOGPS();
+            }
+        }
+
+
+
+
     }
 
     //Reactivar ubicación
@@ -202,21 +304,7 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
     }*/
 
     //Mostrar aviso de ubicación
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
-    {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 0)
-        {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-            {
-                Toast.makeText(getContext(), "Permiso de ubicación", Toast.LENGTH_SHORT).show();
-            } else
-            {
-                Toast.makeText(getContext(), "SIN permiso de ubicación", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+
 
     @Override
     public void onClick(View v)
@@ -317,6 +405,43 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
                 }
             });
         }
+        if (flag) {
+            if(requestCode == SETTINGS_REQUEST_CODE && gpsActived()){
+                flag=false;
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>()
+                {
+                    @Override
+                    public void onSuccess(Location location)
+                    {
+                        if (true)
+                        {
+                            //Toast.makeText(getContext(), "Latitud: " + location.getLatitude() + " Longitud: " + location.getLongitude(), Toast.LENGTH_LONG).show();
+                            latitud = location.getLatitude();
+                            longitud = location.getLongitude();
+                            LatLng ubicacionActual = new LatLng(location.getLatitude(), location.getLongitude());
+                            map.addMarker(new MarkerOptions()
+                                    .position(ubicacionActual)
+                            );
+                            map.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionActual, 15f));
+                        } else
+                        {
+                            //createLocationRequest();
+                            Toast.makeText(getContext(), "Reinicia el servicio de ubicación", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
+            else{
+                showAlertDialogNOGPS();
+            }
+            }else{
+
+            }
+
+
     }
 
     public void limpiar()
@@ -374,5 +499,49 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
     public void onNothingSelected(AdapterView<?> parent)
     {
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {//si el usuario concedio los permisos
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    if(gpsActived()){
+
+                        fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>()
+                        {
+                            @Override
+                            public void onSuccess(Location location)
+                            {
+                                if (true)
+                                {
+                                    //Toast.makeText(getContext(), "Latitud: " + location.getLatitude() + " Longitud: " + location.getLongitude(), Toast.LENGTH_LONG).show();
+                                    latitud = location.getLatitude();
+                                    longitud = location.getLongitude();
+                                    LatLng ubicacionActual = new LatLng(location.getLatitude(), location.getLongitude());
+                                    map.addMarker(new MarkerOptions()
+                                            .position(ubicacionActual)
+                                    );
+                                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionActual, 15f));
+                                } else
+                                {
+                                    //createLocationRequest();
+                                    Toast.makeText(getContext(), "Reinicia el servicio de ubicación", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                    }
+                    else{
+                        showAlertDialogNOGPS();
+                    }
+                } else {
+                    checkLocationPermissions();
+                }
+
+            } else {
+                checkLocationPermissions();
+            }
+        }
     }
 }
