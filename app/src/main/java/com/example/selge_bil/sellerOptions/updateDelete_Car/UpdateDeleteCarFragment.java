@@ -417,7 +417,7 @@ public class UpdateDeleteCarFragment extends Fragment implements OnMapReadyCallb
                     carro.setId_usuarioComprador(carroSeleccionado.getId_usuarioComprador());
                     carro.setId_usuarioVendedor(carroSeleccionado.getId_usuarioVendedor());
                     carro.setEstado_id_usuarioVendedor(carroSeleccionado.getEstado_id_usuarioVendedor());
-
+                    carro.setEstado_tipoCarro(carroSeleccionado.getEstado_tipoCarro());
                     databaseReference.child(carro.getId()).setValue(carro);
                     Toast.makeText(getContext(), "Datos actualizados", Toast.LENGTH_LONG).show();
                     limpiar();

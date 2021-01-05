@@ -84,7 +84,7 @@ public class showListCar extends Fragment{
         FirebaseApp.initializeApp(getContext());
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Cars");
         databaseReference.keepSynced(true);
-        query = databaseReference.orderByChild("tipoCarro").equalTo(filter);
+        query = databaseReference.orderByChild("estado_tipoCarro").equalTo("0_"+filter);
 //        query = databaseReference;
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();

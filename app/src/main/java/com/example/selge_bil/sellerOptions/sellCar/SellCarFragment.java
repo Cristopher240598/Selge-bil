@@ -168,65 +168,84 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
         spnCombustibles.setOnItemSelectedListener(this);
         spnNoPasajeros.setOnItemSelectedListener(this);
     }
-    private boolean gpsActived(){ //si tiene el gps activo
 
-        boolean isActive= false;
+    private boolean gpsActived()
+    { //si tiene el gps activo
+
+        boolean isActive = false;
         LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
-        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){ //comprobar si tiene el gps activado
-            isActive= true;
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        { //comprobar si tiene el gps activado
+            isActive = true;
 
         }
         return isActive;
     }
-    private void showAlertDialogNOGPS(){
-        flag=true;
+
+    private void showAlertDialogNOGPS()
+    {
+        flag = true;
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage("Por favor activa tu ubicación para continuar")
-                .setPositiveButton("Configuraciones", new DialogInterface.OnClickListener() {
+                .setPositiveButton("Configuraciones", new DialogInterface.OnClickListener()
+                {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS),SETTINGS_REQUEST_CODE);
+                    public void onClick(DialogInterface dialogInterface, int i)
+                    {
+                        startActivityForResult(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS), SETTINGS_REQUEST_CODE);
                     }
                 }).create().show();
     }
-    private void checkLocationPermissions(){
-        if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            if(ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.ACCESS_FINE_LOCATION)){
-                flag=true;
+
+    private void checkLocationPermissions()
+    {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION))
+            {
+                flag = true;
                 new AlertDialog.Builder(getContext())
                         .setTitle("Proporciona los permisos para continuar")
                         .setMessage("Esta aplicación requiere de los permisos de ubicación para poder utilizarse")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener()
+                        {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {//Habilita permisos para ubicacion
-                                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
-                             //   ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+                            public void onClick(DialogInterface dialogInterface, int i)
+                            {//Habilita permisos para ubicacion
+                                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+                                //   ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
 
                             }
                         })
                         .create()
                         .show();
-            }
-            else{
-                flag=true;
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
-               // ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
+            } else
+            {
+                flag = true;
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_REQUEST_CODE);
+                // ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},LOCATION_REQUEST_CODE);
             }
         }
 
     }
-    public void fusedLocation(){
+
+    public void fusedLocation()
+    {
 
     }
+
     //Mostrar mapa con ubicación actual
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
         map = googleMap;
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            if(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                if(gpsActived()){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            {
+                if (gpsActived())
+                {
                     fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>()
                     {
                         @Override
@@ -250,16 +269,18 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
                         }
                     });
 
-                }
-                else{
+                } else
+                {
                     showAlertDialogNOGPS();
                 }
-            }else{
+            } else
+            {
                 checkLocationPermissions();
             }
-        }
-        else{
-            if(gpsActived()){
+        } else
+        {
+            if (gpsActived())
+            {
                 fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>()
                 {
                     @Override
@@ -283,13 +304,11 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
                     }
                 });
 
-            }
-            else{
+            } else
+            {
                 showAlertDialogNOGPS();
             }
         }
-
-
 
 
     }
@@ -368,6 +387,7 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
                     carro.setId_usuarioComprador("0");
                     carro.setId_usuarioVendedor(authProvider.getId());
                     carro.setEstado_id_usuarioVendedor("0_" + authProvider.getId());
+                    carro.setEstado_tipoCarro("0_" + carro.getTipoCarro());
 
                     databaseReference.child(carro.getId()).setValue(carro);
                     Toast.makeText(getContext(), "Datos agregados", Toast.LENGTH_SHORT).show();
@@ -405,10 +425,13 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
                 }
             });
         }
-        if (flag) {
-            if(requestCode == SETTINGS_REQUEST_CODE && gpsActived()){
-                flag=false;
-                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (flag)
+        {
+            if (requestCode == SETTINGS_REQUEST_CODE && gpsActived())
+            {
+                flag = false;
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+                {
                     return;
                 }
                 fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>()
@@ -433,13 +456,14 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
                         }
                     }
                 });
-            }
-            else{
+            } else
+            {
                 showAlertDialogNOGPS();
             }
-            }else{
+        } else
+        {
 
-            }
+        }
 
 
     }
@@ -502,12 +526,17 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == LOCATION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {//si el usuario concedio los permisos
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    if(gpsActived()){
+        if (requestCode == LOCATION_REQUEST_CODE)
+        {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+            {//si el usuario concedio los permisos
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+                {
+                    if (gpsActived())
+                    {
 
                         fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>()
                         {
@@ -531,15 +560,17 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
                                 }
                             }
                         });
-                    }
-                    else{
+                    } else
+                    {
                         showAlertDialogNOGPS();
                     }
-                } else {
+                } else
+                {
                     checkLocationPermissions();
                 }
 
-            } else {
+            } else
+            {
                 checkLocationPermissions();
             }
         }

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -33,9 +34,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -43,7 +47,7 @@ public class detailsCar extends Fragment {
     private RecyclerView rV_carrosList;
     private DatabaseReference databaseReference;
     private FirebaseStorage storage;
-    private Button btnBack;
+    private Button btnBack, btnBuy;
     public StorageReference storageReference;
     private AuthProvider authProvider;
     Query query;
@@ -116,6 +120,49 @@ public class detailsCar extends Fragment {
                     @Override
                     public void onClick(View v) {
                         back();
+                    }
+                });
+                btnBuy = view.findViewById(R.id.btnBuy_carroDetalles);
+                btnBuy.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        databaseReference.child(showListCar.getIdCarro()).addValueEventListener(new ValueEventListener()
+                        {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot)
+                            {
+                                Carro carroSelec = snapshot.getValue(Carro.class);
+                                Carro carro = new Carro();
+                                carro.setId(carroSelec.getId());
+                                carro.setModelo(carroSelec.getModelo());
+                                carro.setPrecio(carroSelec.getPrecio());
+                                carro.setTraccion(carroSelec.getTraccion());
+                                carro.setKilometraje(carroSelec.getKilometraje());
+                                carro.setMarca(carroSelec.getMarca());
+                                carro.setTransmision(carroSelec.getTransmision());
+                                carro.setTipoCarro(carroSelec.getTipoCarro());
+                                carro.setAnio(carroSelec.getAnio());
+                                carro.setCombustible(carroSelec.getCombustible());
+                                carro.setNumeroPasajeros(carroSelec.getNumeroPasajeros());
+                                carro.setImagen(carroSelec.getImagen());
+                                carro.setLatitud(carroSelec.getLatitud());
+                                carro.setLongitud(carroSelec.getLongitud());
+                                carro.setEstado("1");
+                                carro.setId_usuarioComprador(authProvider.getId());
+                                carro.setId_usuarioVendedor(carroSelec.getId_usuarioVendedor());
+                                carro.setEstado_id_usuarioVendedor("1_"+carro.getId_usuarioVendedor());
+                                carro.setEstado_tipoCarro("1_"+carro.getTipoCarro());
+                                databaseReference.child(carro.getId()).setValue(carro);
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error)
+                            {
+
+                            }
+                        });
                     }
                 });
                 return new detalles_Carro_buyer(view);

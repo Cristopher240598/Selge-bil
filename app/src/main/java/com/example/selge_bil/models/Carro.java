@@ -20,6 +20,7 @@ public class Carro
     String id_usuarioComprador;
     String id_usuarioVendedor;
     String estado_id_usuarioVendedor;
+    String estado_tipoCarro;
 
     public Carro()
     {
@@ -204,6 +205,16 @@ public class Carro
     public void setEstado_id_usuarioVendedor(String estado_id_usuarioVendedor)
     {
         this.estado_id_usuarioVendedor = estado_id_usuarioVendedor;
+    }
+
+    public String getEstado_tipoCarro()
+    {
+        return estado_tipoCarro;
+    }
+
+    public void setEstado_tipoCarro(String estado_tipoCarro)
+    {
+        this.estado_tipoCarro = estado_tipoCarro;
     }
 
     public String toString()
