@@ -22,6 +22,10 @@ public class CompradorProvider
         Map<String, Object> map = new HashMap<>();
         map.put("name", client.getName());
         map.put("email", client.getEmail());
+        map.put("paterno", client.getApPaterno());
+        map.put("materno", client.getApMaterno());
+        map.put("phone", client.getTelefono());
+        map.put("direction", client.getDomicilio());
         return mDatabase.child(client.getId()).setValue(map);
     }
 }
