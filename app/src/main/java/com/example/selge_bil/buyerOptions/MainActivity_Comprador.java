@@ -1,5 +1,6 @@
 package com.example.selge_bil.buyerOptions;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -26,13 +27,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.selge_bil.R;
 import com.example.selge_bil.activities.LoginActivity;
+import com.example.selge_bil.activities.MainOption;
 import com.example.selge_bil.buyerOptions.convertible.convertible;
+import com.example.selge_bil.providers.AuthProvider;
+import com.example.selge_bil.sellerOptions.MainActivity_Vendedor;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.FirebaseApp;
+
+import dmax.dialog.SpotsDialog;
 
 public class MainActivity_Comprador extends AppCompatActivity{
 
     private AppBarConfiguration mAppBarConfiguration;
     public static String filter;
+    AuthProvider mAuth;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +49,9 @@ public class MainActivity_Comprador extends AppCompatActivity{
         setContentView(R.layout.activity_main_buyer);
         Toolbar toolbar = findViewById(R.id.toolbar_buyer);
         setSupportActionBar(toolbar);
+        mAuth = new AuthProvider();
 
+        FirebaseApp.initializeApp(this);
         final DrawerLayout drawer = findViewById(R.id.drawer_layout_buyer);
         NavigationView navigationView = findViewById(R.id.nav_view_buyer);
 
@@ -137,9 +148,13 @@ public class MainActivity_Comprador extends AppCompatActivity{
 
     public void logOut(View view) {
 
-        Intent intent = new Intent(MainActivity_Comprador.this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | intent.FLAG_ACTIVITY_CLEAR_TASK); //cuando se crea el usuario ya no puedes regresar a la pantalla de formulario de registro
-        startActivity(intent);
+        AlertDialog mDialog;
+        mDialog = new SpotsDialog.Builder().setContext(MainActivity_Comprador.this).setMessage("Cerrando sesion").build();
+        mDialog.show();
+        mAuth.logout();
+        mDialog.hide();
+        startActivity(new Intent(MainActivity_Comprador.this, MainOption.class));
+        finish();
     }
 
 }
