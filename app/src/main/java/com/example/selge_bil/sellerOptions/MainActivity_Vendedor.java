@@ -10,7 +10,10 @@ import android.widget.TextView;
 
 import com.example.selge_bil.R;
 import com.example.selge_bil.activities.MainOption;
+import com.example.selge_bil.activities.comprador.EditInfo;
+import com.example.selge_bil.activities.vendedor.EditInfoVendedor;
 import com.example.selge_bil.activities.vendedor.RegisterVendedorActivity;
+import com.example.selge_bil.buyerOptions.MainActivity_Comprador;
 import com.example.selge_bil.providers.AuthProvider;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
@@ -85,6 +88,12 @@ public class MainActivity_Vendedor extends AppCompatActivity
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+    public void editInfo(View view) {
+
+
+        startActivity(new Intent(MainActivity_Vendedor.this, EditInfoVendedor.class));
+
     }
 
 }

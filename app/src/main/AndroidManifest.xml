@@ -20,7 +20,8 @@
         android:roundIcon="@mipmap/ic_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.comprador.EditInfo"></activity>
+        <activity android:name=".activities.vendedor.EditInfoVendedor"></activity>
+        <activity android:name=".activities.comprador.EditInfo" />
         <activity android:name=".activities.vendedor.RegisterVendedorActivity" />
         <activity android:name=".activities.comprador.RegisterCompradorActivity" />
         <activity android:name=".activities.LoginActivity" />

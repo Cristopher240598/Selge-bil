@@ -23,6 +23,20 @@ public class VendedorProvider
         Map<String, Object> map = new HashMap<>();
         map.put("name", client.getName());
         map.put("email", client.getEmail());
+        map.put("apPaterno", client.getApPaterno());
+        map.put("apMaterno", client.getApMaterno());
+        map.put("telefono", client.getTelefono());
+        map.put("domicilio", client.getDomicilio());
+        return mDatabase.child(client.getId()).setValue(map);
+    }
+    public Task<Void> updateVendedor(Vendedor client){
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", client.getName());
+        map.put("email", client.getEmail());
+        map.put("apPaterno", client.getApPaterno());
+        map.put("apMaterno", client.getApMaterno());
+        map.put("telefono", client.getTelefono());
+        map.put("domicilio", client.getDomicilio());
         return mDatabase.child(client.getId()).setValue(map);
     }
 }

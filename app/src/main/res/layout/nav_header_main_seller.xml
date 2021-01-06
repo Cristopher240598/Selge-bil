@@ -12,7 +12,6 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
 
-
     <TextView
         android:id="@+id/tV_usuario_nav"
         android:layout_width="wrap_content"
@@ -32,13 +31,25 @@
         android:text="Correo"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="12dp" />
+
+    <TextView
+        android:id="@+id/tV_editInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:onClick="editInfo"
+        android:paddingTop="10dp"
+        android:text="Editar mi información"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="12dp" />
+
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/colorBlueLight"
         android:layout_marginTop="10dp"
-        android:text="@string/cerrarSesion"/>
+        android:background="@color/colorBlueLight"
+        android:text="@string/cerrarSesion" />
 
 
 </LinearLayout>

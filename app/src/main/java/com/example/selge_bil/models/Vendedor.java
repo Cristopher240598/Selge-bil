@@ -5,45 +5,78 @@ public class Vendedor
     String id;
     String name;
     String email;
+    String apPaterno;
+    String apMaterno;
+    String telefono;
+    String domicilio;
 
     public Vendedor()
     {
     }
 
-    public Vendedor(String id, String name, String email)
-    {
+    public Vendedor(String id, String name, String email, String apPaterno, String apMaterno, String telefono, String domicilio) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.apPaterno = apPaterno;
+        this.apMaterno = apMaterno;
+        this.telefono = telefono;
+        this.domicilio = domicilio;
     }
 
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 
-    public void setId(String id)
-    {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public void setName(String name)
-    {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getEmail()
-    {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email)
-    {
+    public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getApPaterno() {
+        return apPaterno;
+    }
+
+    public void setApPaterno(String apPaterno) {
+        this.apPaterno = apPaterno;
+    }
+
+    public String getApMaterno() {
+        return apMaterno;
+    }
+
+    public void setApMaterno(String apMaterno) {
+        this.apMaterno = apMaterno;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
     }
 }
