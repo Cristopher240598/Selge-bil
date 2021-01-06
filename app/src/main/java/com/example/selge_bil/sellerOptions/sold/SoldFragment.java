@@ -191,6 +191,8 @@ public class SoldFragment extends Fragment
         {
             final TextView tV_idUsuarioComprador = (TextView) view.findViewById(R.id.tV_nombreComprador_carrosVendidos);
             final TextView tV_correoComprador = (TextView) view.findViewById(R.id.tV_correoComprador_carrosVendidos);
+            final TextView tV_telefonoComprador = (TextView) view.findViewById(R.id.tV_telefonoComprador_carrosVendidos);
+            final TextView tV_direccionComprador = (TextView) view.findViewById(R.id.tV_direccionComprador_carrosVendidos);
             databaseReference_Carro.addListenerForSingleValueEvent(new ValueEventListener()
             {
                 @Override
@@ -199,8 +201,10 @@ public class SoldFragment extends Fragment
                     if (snapshot.hasChild(idUsuarioComprador))
                     {
                         Comprador comprador = snapshot.child(idUsuarioComprador).getValue(Comprador.class);
-                        tV_idUsuarioComprador.setText(comprador.getName());
+                        tV_idUsuarioComprador.setText(comprador.getName() + " " + comprador.getApPaterno() + " " + comprador.getApMaterno());
                         tV_correoComprador.setText(comprador.getEmail());
+                        tV_telefonoComprador.setText(comprador.getTelefono());
+                        tV_direccionComprador.setText(comprador.getDomicilio());
                     }
                 }
 
