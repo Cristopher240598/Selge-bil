@@ -22,10 +22,20 @@ public class CompradorProvider
         Map<String, Object> map = new HashMap<>();
         map.put("name", client.getName());
         map.put("email", client.getEmail());
-        map.put("paterno", client.getApPaterno());
-        map.put("materno", client.getApMaterno());
-        map.put("phone", client.getTelefono());
-        map.put("direction", client.getDomicilio());
+        map.put("apPaterno", client.getApPaterno());
+        map.put("apMaterno", client.getApMaterno());
+        map.put("telefono", client.getTelefono());
+        map.put("domicilio", client.getDomicilio());
+        return mDatabase.child(client.getId()).setValue(map);
+    }
+    public Task<Void> updatePaciente(Comprador client){
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", client.getName());
+        map.put("email", client.getEmail());
+        map.put("apPaterno", client.getApPaterno());
+        map.put("apMaterno", client.getApMaterno());
+        map.put("telefono", client.getTelefono());
+        map.put("domicilio", client.getDomicilio());
         return mDatabase.child(client.getId()).setValue(map);
     }
 }

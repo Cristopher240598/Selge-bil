@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.selge_bil.R;
 import com.example.selge_bil.activities.LoginActivity;
 import com.example.selge_bil.activities.MainOption;
+import com.example.selge_bil.activities.comprador.EditInfo;
 import com.example.selge_bil.buyerOptions.convertible.convertible;
 import com.example.selge_bil.providers.AuthProvider;
 import com.example.selge_bil.sellerOptions.MainActivity_Vendedor;
@@ -51,9 +53,18 @@ public class MainActivity_Comprador extends AppCompatActivity{
         setSupportActionBar(toolbar);
         mAuth = new AuthProvider();
 
+
+
         FirebaseApp.initializeApp(this);
         final DrawerLayout drawer = findViewById(R.id.drawer_layout_buyer);
         NavigationView navigationView = findViewById(R.id.nav_view_buyer);
+        View headerView = navigationView.getHeaderView(0);
+
+        if(mAuth.existSession()){
+            TextView tvName=  headerView.findViewById(R.id.tV_usuario_nav_buyer);
+            tvName.setText(mAuth.getName());
+            Toast.makeText(this, mAuth.getName(), Toast.LENGTH_LONG).show();
+        }
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_convertible,
@@ -155,6 +166,12 @@ public class MainActivity_Comprador extends AppCompatActivity{
         mDialog.hide();
         startActivity(new Intent(MainActivity_Comprador.this, MainOption.class));
         finish();
+    }
+    public void editInfo(View view) {
+
+
+        startActivity(new Intent(MainActivity_Comprador.this, EditInfo.class));
+
     }
 
 }
