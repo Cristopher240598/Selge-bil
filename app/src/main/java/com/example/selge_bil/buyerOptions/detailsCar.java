@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.selge_bil.R;
 import com.example.selge_bil.models.Carro;
+import com.example.selge_bil.models.Vendedor;
 import com.example.selge_bil.providers.AuthProvider;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -44,6 +45,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 public class detailsCar extends Fragment {
+
     private RecyclerView rV_carrosList;
     private DatabaseReference databaseReference;
     private FirebaseStorage storage;
@@ -55,7 +57,6 @@ public class detailsCar extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        System.out.println(showListCar.getIdCarro() + "<----------------------->");
         View root = inflater.inflate(R.layout.fragment_convertible, container, false);
         baseDatos();
         TextView tvhome = root.findViewById(R.id.text_home_buyer);
@@ -77,6 +78,15 @@ public class detailsCar extends Fragment {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
     }
+    private void baseDatos(String id) {
+        authProvider = new AuthProvider();
+        FirebaseApp.initializeApp(getContext());
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/Vendedores");
+//        databaseReference.keepSynced(true);
+//        query = databaseReference.orderByChild("id").equalTo(id);
+//        storage = FirebaseStorage.getInstance();
+//        storageReference = storage.getReference();
+    }
 
     public void back() {
         final showListCar f = new showListCar();
@@ -96,7 +106,7 @@ public class detailsCar extends Fragment {
                 .build();
         FirebaseRecyclerAdapter<Carro, detalles_Carro_buyer> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Carro, detalles_Carro_buyer>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull detalles_Carro_buyer holder, int position, @NonNull Carro model) {
+            protected void onBindViewHolder(@NonNull final detalles_Carro_buyer holder, int position, @NonNull Carro model) {
                 holder.setModelo(model.getModelo());
                 holder.setPrecio(model.getPrecio());
                 holder.setTraccion(model.getTraccion());
@@ -108,6 +118,25 @@ public class detailsCar extends Fragment {
                 holder.setCombustible(model.getCombustible());
                 holder.setNoPasajeros(model.getNumeroPasajeros());
                 holder.setImagen(model.getImagen());
+                holder.setMapLocation(Double.parseDouble(model.getLatitud()), Double.parseDouble(model.getLongitud()));
+                System.out.println(model.getId_usuarioVendedor()  +  "              <------------------");
+                baseDatos(model.getId_usuarioVendedor());
+                databaseReference.child(model.getId_usuarioVendedor()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Vendedor vendedor = snapshot.getValue(Vendedor.class);
+                        holder.setName(vendedor.getName(), vendedor.getApPaterno(), vendedor.getApMaterno());
+                        holder.setMail(vendedor.getEmail());
+                        holder.setPhone(vendedor.getTelefono());
+                        System.out.println(vendedor.getEmail()  +  "              <------------------");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
                 holder.setMapLocation(Double.parseDouble(model.getLatitud()), Double.parseDouble(model.getLongitud()));
             }
 
@@ -128,6 +157,7 @@ public class detailsCar extends Fragment {
                     @Override
                     public void onClick(View v)
                     {
+                        baseDatos();
                         databaseReference.child(showListCar.getIdCarro()).addValueEventListener(new ValueEventListener()
                         {
                             @Override
@@ -170,7 +200,6 @@ public class detailsCar extends Fragment {
         };
         firebaseRecyclerAdapter.startListening();
         rV_carrosList.setAdapter(firebaseRecyclerAdapter);
-
 
     }
 
@@ -267,6 +296,21 @@ public class detailsCar extends Fragment {
 
         public void setNoPasajeros(String noPasajeros) {
             TextView tV_noPasajeros = (TextView) view.findViewById(R.id.tV_noPasajeros_misCarros_details);
+            tV_noPasajeros.setText("Pasajeros: " + noPasajeros);
+        }
+
+        public void setName(String nombre, String apPat, String apMat) {
+            TextView tV_anio = (TextView) view.findViewById(R.id.seller_name);
+            tV_anio.setText(nombre + " " + apPat + " "+ apMat);
+        }
+
+        public void setPhone(String combustible) {
+            TextView tV_combustible = (TextView) view.findViewById(R.id.seller_phone);
+            tV_combustible.setText("Combustible: " + combustible);
+        }
+
+        public void setMail(String noPasajeros) {
+            TextView tV_noPasajeros = (TextView) view.findViewById(R.id.seller_email);
             tV_noPasajeros.setText("Pasajeros: " + noPasajeros);
         }
 

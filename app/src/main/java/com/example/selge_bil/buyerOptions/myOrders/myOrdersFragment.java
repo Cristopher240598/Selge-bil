@@ -1,4 +1,4 @@
-package com.example.selge_bil.buyerOptions.convertible;
+package com.example.selge_bil.buyerOptions.myOrders;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,15 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.selge_bil.R;
@@ -35,7 +30,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -43,7 +37,8 @@ import com.google.firebase.database.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-public class convertible extends Fragment {
+public class myOrdersFragment extends Fragment {
+
     private RecyclerView rV_carrosList;
     private DatabaseReference databaseReference;
     private FirebaseStorage storage;
@@ -52,10 +47,8 @@ public class convertible extends Fragment {
     Query query;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-//        System.out.println(getCheckedItem());
-        View root = inflater.inflate(R.layout.fragment_convertible, container, false);
-
+            ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_mycars, container, false);
         baseDatos();
 
         rV_carrosList = (RecyclerView) root.findViewById(R.id.my_recycler_view);
@@ -65,39 +58,26 @@ public class convertible extends Fragment {
         return root;
     }
 
-    private int getCheckedItem(NavigationView navigationView) {
-        Menu menu = navigationView.getMenu();
-        for (int i = 0; i < menu.size(); i++) {
-            MenuItem item = menu.getItem(i);
-            if (item.isChecked()) {
-                return i;
-            }
-        }
-        return -1;
-    }
-
     private void baseDatos() {
         authProvider = new AuthProvider();
         FirebaseApp.initializeApp(getContext());
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Cars");
         databaseReference.keepSynced(true);
-//        query = databaseReference.orderByChild("estado_id_usuarioVendedor").equalTo("0_" + authProvider.getId());
-        query = databaseReference;
+        query = databaseReference.orderByChild("id_usuarioComprador").equalTo(authProvider.getId());
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
     }
 
     @Override
     public void onStart() {
-
         super.onStart();
+
         FirebaseRecyclerOptions<Carro> options = new FirebaseRecyclerOptions.Builder<Carro>()
-//                .setQuery(query, Carro.class)
                 .setQuery(query, Carro.class)
                 .build();
-        FirebaseRecyclerAdapter<Carro, CarroViewHolder_buyer> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Carro, CarroViewHolder_buyer>(options) {
+        FirebaseRecyclerAdapter<Carro, MyCarsFragment.CarroViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Carro, MyCarsFragment.CarroViewHolder>(options) {
             @Override
-            protected void onBindViewHolder(@NonNull CarroViewHolder_buyer holder, int position, @NonNull Carro model) {
+            protected void onBindViewHolder(@NonNull MyCarsFragment.CarroViewHolder holder, int position, @NonNull Carro model) {
                 holder.setModelo(model.getModelo());
                 holder.setPrecio(model.getPrecio());
                 holder.setTraccion(model.getTraccion());
@@ -114,9 +94,9 @@ public class convertible extends Fragment {
 
             @NonNull
             @Override
-            public CarroViewHolder_buyer onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            public MyCarsFragment.CarroViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.car_row, parent, false);
-                return new CarroViewHolder_buyer(view);
+                return new MyCarsFragment.CarroViewHolder(view);
             }
         };
         firebaseRecyclerAdapter.startListening();
@@ -124,7 +104,7 @@ public class convertible extends Fragment {
     }
 
 
-    public static class CarroViewHolder_buyer extends RecyclerView.ViewHolder {
+    public static class CarroViewHolder extends RecyclerView.ViewHolder {
         View view;
         public MapView mapView;
 
@@ -134,7 +114,7 @@ public class convertible extends Fragment {
         final FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference storageRef = storage.getReference();
 
-        public CarroViewHolder_buyer(final View itemView) {
+        public CarroViewHolder(final View itemView) {
             super(itemView);
             view = itemView;
             mapView = (MapView) itemView.findViewById(R.id.map_misCarros);

@@ -7,58 +7,64 @@
 
 
     <fragment
+        android:id="@+id/nav_myOrders"
+        android:name="com.example.selge_bil.buyerOptions.myOrders.myOrdersFragment"
+        android:label="Convertible"
+        tools:layout="@layout/fragment_convertible"/>
+
+    <fragment
         android:id="@+id/nav_convertible"
         android:name="com.example.selge_bil.buyerOptions.showListCar"
-        android:label="fragment_convertible"
+        android:label="Convertible"
         tools:layout="@layout/fragment_convertible"/>
     <fragment
         android:id="@+id/nav_coupe"
         android:name="com.example.selge_bil.buyerOptions.showListCar"
-        android:label="fragment_coupe"
+        android:label="Coupé"
         tools:layout="@layout/fragment_convertible"/>
     <fragment
         android:id="@+id/nav_electrico"
         android:name="com.example.selge_bil.buyerOptions.showListCar"
-        android:label="fragment_electrico"
+        android:label="Eléctrico"
         tools:layout="@layout/fragment_convertible"/>
     <fragment
         android:id="@+id/nav_hatchback"
         android:name="com.example.selge_bil.buyerOptions.showListCar"
-        android:label="fragment_hatchback"
+        android:label="Hatchback"
         tools:layout="@layout/fragment_convertible"/>
     <fragment
         android:id="@+id/nav_hibrido"
         android:name="com.example.selge_bil.buyerOptions.showListCar"
-        android:label="fragment_hibrido"
+        android:label="Híbrido"
         tools:layout="@layout/fragment_convertible"/>
     <fragment
         android:id="@+id/nav_pickUp"
         android:name="com.example.selge_bil.buyerOptions.showListCar"
-        android:label="fragment_pick_up"
+        android:label="Pick Up"
         tools:layout="@layout/fragment_convertible"/>
     <fragment
         android:id="@+id/nav_sedan"
         android:name="com.example.selge_bil.buyerOptions.showListCar"
-        android:label="fragment_sedan"
+        android:label="Sedán"
         tools:layout="@layout/fragment_convertible"/>
     <fragment
         android:id="@+id/nav_suv"
         android:name="com.example.selge_bil.buyerOptions.showListCar"
-        android:label="fragment_suv"
+        android:label="SUV"
         tools:layout="@layout/fragment_convertible"/>
     <fragment
         android:id="@+id/nav_utilitario"
         android:name="com.example.selge_bil.buyerOptions.showListCar"
-        android:label="fragment_utilitario"
+        android:label="Utilitario"
         tools:layout="@layout/fragment_convertible"/>
     <fragment
         android:id="@+id/nav_van"
         android:name="com.example.selge_bil.buyerOptions.showListCar"
-        android:label="fragment_van"
+        android:label="Van"
         tools:layout="@layout/fragment_convertible"/>
     <fragment
-        android:id="@+id/nav_manuel_buyer"
+        android:id="@+id/nav_manual_buyer"
         android:name="com.example.selge_bil.buyerOptions.userManual.UserManualFragment"
-        android:label="fragment_van"
+        android:label="Manual de usuario"
         tools:layout ="@layout/fragment_user_manual" />
 </navigation>

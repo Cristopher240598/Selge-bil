@@ -187,6 +187,7 @@
                     app:srcCompat="@drawable/ic_baseline_account_circle_24" />
 
                 <TextView
+                    android:id="@+id/seller_name"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="Nombre y apellido" />
@@ -208,6 +209,7 @@
                     app:srcCompat="@drawable/ic_baseline_account_circle_24" />
 
                 <TextView
+                    android:id="@+id/seller_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="1234567890" />
@@ -229,6 +231,7 @@
                     app:srcCompat="@drawable/ic_baseline_account_circle_24" />
 
                 <TextView
+                    android:id="@+id/seller_email"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:text="example@example.com" />

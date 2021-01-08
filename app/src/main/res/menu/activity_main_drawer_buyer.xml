@@ -5,6 +5,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_myOrders"
+            android:icon="@drawable/carros"
+            android:title="Mis compras" />
+        <item
             android:id="@+id/nav_convertible"
             android:icon="@drawable/carros"
             android:title="Convertible" />

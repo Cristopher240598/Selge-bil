@@ -1,38 +1,32 @@
 package com.example.selge_bil.buyerOptions;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.selge_bil.R;
-import com.example.selge_bil.activities.LoginActivity;
 import com.example.selge_bil.activities.MainOption;
 import com.example.selge_bil.activities.comprador.EditInfo;
-import com.example.selge_bil.buyerOptions.convertible.convertible;
 import com.example.selge_bil.providers.AuthProvider;
-import com.example.selge_bil.sellerOptions.MainActivity_Vendedor;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.FirebaseApp;
 
@@ -48,6 +42,15 @@ public class MainActivity_Comprador extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED)
+        {
+            System.out.println("No tiene el permiso ----------------------->");
+        }
+//        shouldShowRequestPermissionRationale( Manifest.permission.ACCESS_COARSE_LOCATION);
+//        requestPermissions(getApplicationContext(),
+//                Manifest.permission.ACCESS_COARSE_LOCATION);
         setContentView(R.layout.activity_main_buyer);
         Toolbar toolbar = findViewById(R.id.toolbar_buyer);
         setSupportActionBar(toolbar);
