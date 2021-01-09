@@ -331,6 +331,7 @@ public class SellCarFragment extends Fragment implements OnMapReadyCallback, Vie
         switch (v.getId())
         {
             case R.id.iV_foto_registrar:
+                flag=false;
                 Intent tomaFoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if (tomaFoto.resolveActivity(getActivity().getPackageManager()) != null)
                 {
