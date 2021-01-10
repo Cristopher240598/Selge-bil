@@ -72,7 +72,7 @@ public class UserManualFragment extends Fragment
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_user_manual, container, false);
         vVVideo = root.findViewById(R.id.vV_video_manual);
-        vVVideo.setVideoURI(Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.manual_vendedor));
+        vVVideo.setVideoURI(Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.manual_comprador));
         MediaController mediaController = new MediaController(root.getContext());
         vVVideo.setMediaController(mediaController);
         vVVideo.start();
